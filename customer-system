@@ -1,0 +1,61 @@
+#%RAML 1.0
+baseUri: https://mocksvc.mulesoft.com/mocks/1333bcc7-b446-45bb-aaa8-0f085f9e9685 # 
+title: Catalyst Retail - Customer System API
+version: v1.0
+
+types: 
+  address: 
+    type: object
+    properties:
+      street?: string?
+      city?: string?
+      zipCode?: string?
+      state?: string?
+      country?: string?
+  contact:
+    type: object
+    properties:
+      id?: string
+      customerId?: string
+      firstName?: string
+      lastName: string
+      phone?: string
+      email?: string
+      deliveryAddress?: address? 
+      postalAddress?: address?
+  
+/customers:
+  displayName: Customer contact
+  post:
+    description: Create customer contact  
+    body:
+      application/json:
+        type: contact
+        example: !include examples/post_contact_example.json
+    responses:
+      201:
+        body: 
+          application/json: 
+            example: |
+              {
+                "id": "sfdc|1234567890",
+                "customerId": "provider|0123456789"
+              }
+              
+  /{customerId}:          
+    get:
+      description: Return customer information by customerId 
+      responses:
+        200: 
+          body:
+            application/json:
+              type: contact
+              example: !include examples/get_contact_example.json
+    put:
+      description: Update customer contact by customerId  
+      body:
+        application/json:
+          type: contact
+          example: !include examples/put_contact_example.json 
+      responses:
+        200:
